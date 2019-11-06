@@ -49,7 +49,7 @@ function weekDayNames(firstDayOfWeek = 0) {
   return weekDaysNames;
 }
 
-function page(xd, firstDayOfWeek) {
+function page(xd, firstDayOfWeek, forceMonthWith6Weeks = false) {
   const days = month(xd);
   let before = [], after = [];
 
@@ -77,7 +77,15 @@ function page(xd, firstDayOfWeek) {
     after = fromTo(days[days.length - 1], to);
   }
 
-  return before.concat(days.slice(1, days.length - 1), after);
+  const temp = before.concat(days.slice(1, days.length - 1), after);
+
+  if (!forceMonthWith6Weeks || temp.length === 42){
+    return temp;
+  }
+
+  to.addDays(7);
+  const afterOneMoreWeek = fromTo(days[days.length - 1], to);
+  return before.concat(days.slice(1, days.length - 1), afterOneMoreWeek);
 }
 
 module.exports = {
